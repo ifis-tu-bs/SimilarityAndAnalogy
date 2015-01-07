@@ -1,6 +1,5 @@
 __author__ = 'Christoph'
 
-
 from nltk.corpus import wordnet as wn
 from nltk.corpus import wordnet_ic
 from gensim.models import word2vec
