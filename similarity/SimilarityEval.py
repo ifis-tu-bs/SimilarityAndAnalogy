@@ -14,7 +14,7 @@ import logging
 # run this only if directly called and not when imported as a library
 
 ic = None
-w2v_model = None
+w2v = None
 clf = None
 absPathToTestFiles = "/opt3/home/lofi/_pycharm/similarity/"
 
@@ -62,22 +62,22 @@ def computeLinSimilarity(term1, term2):
     return maxsim
 
 def initW2V():
-    global w2v_model
+    global w2v
     model_filename="/opt3/.data-lofi/word2vec_google/GoogleNews-vectors-negative300.bin"
     #GoogleNews-vectors-negative300.bin.gz
     #freebase-vectors-skipgram1000.bin.gz
     #/opt3/home/lofi/word2vec_models/freebase-vectors-skipgram1000-en.bin.gz
-    if (w2v_model is None):
+    if (w2v is None):
         print("Loading W2V")
-        # w2v_model= word2vec.Word2Vec(brown.sents())
-        # w2v_model = word2vec.Word2Vec(movie_reviews.sents())
-        w2v_model = word2vec.Word2Vec.load_word2vec_format(model_filename, binary=True)
+        # w2v= word2vec.Word2Vec(brown.sents())
+        # w2v = word2vec.Word2Vec(movie_reviews.sents())
+        w2v = word2vec.Word2Vec.load_word2vec_format(model_filename, binary=True)
 
 def computeW2VSimilarity(term1, term2):
-    global w2v_model
+    global w2v
     initW2V()
     try:
-        simvalue =  w2v_model.similarity(term1, term2)
+        simvalue =  w2v.similarity(term1, term2)
     except KeyError:
         simvalue = 0
     if simvalue < 0:
@@ -89,16 +89,16 @@ def trainSVM():
     global clf
     gold_ws_r = loadGoldData(absPathToTestFiles+"EN-WS-353-related.txt", 1.0 / 10)
     gold_ws_s = loadGoldData(absPathToTestFiles+"EN-WS-353-similar.txt", 1.0 / 10)
-    global w2v_model
+    global w2v
     initW2V()
     vectorData = []
     labels = []
     for gold in gold_ws_s:
         if gold[2] > 0.5: # positive similarity tuple
-            vectorData.append(w2v_model[gold[0]] - w2v_model[gold[1]])
+            vectorData.append(w2v[gold[0]] - w2v[gold[1]])
             labels.append(1)
         if gold[2] < 0.5:
-            vectorData.append(w2v_model[gold[0]] - w2v_model[gold[1]])
+            vectorData.append(w2v[gold[0]] - w2v[gold[1]])
             labels.append(0)
   #  for gold in gold_ws_r:
  #       vectorData.append(w2v_model[gold[0]] - w2v_model[gold[1]])
@@ -112,6 +112,7 @@ def trainSVM():
 
 def runExperimentW2V(golddata, verbose):
     print("COMPUTING")
+    initW2V()
     similarity_vector = []
     reference_vector = []
     for g in golddata:
@@ -121,7 +122,7 @@ def runExperimentW2V(golddata, verbose):
         reference_vector.append(g[2])
         if verbose:
             print("Similarity: %20s : %-20s measured: %5.3f correct:%5.3f " % (g[0], g[1], sim, g[2]))
-            print("Class: %i " % clf.predict(w2v_model[g[0]]-w2v_model[g[1]])[0])
+            print("Class: %i " % clf.predict(w2v[g[0]]-w2v[g[1]])[0])
     correlation_p = pearsonr(reference_vector, similarity_vector)
     correlation_sp = spearmanr(reference_vector, similarity_vector)
     print("Correlation %4.3f  %4.3f " % (correlation_p[0], correlation_sp[0]))
@@ -137,7 +138,7 @@ if __name__ == '__main__':
     gold_ws_s = loadGoldData(absPathToTestFiles+"EN-WS-353-similar.txt", 1.0 / 10)
     gold_ws = loadGoldData(absPathToTestFiles+"EN-WS-353-all.txt", 1.0 / 10)
     gold_men = loadGoldData(absPathToTestFiles+"MEN-full.txt", 1.0 / 50)
-    trainSVM()
+    # trainSVM()
     print("mem")
     runExperimentW2V(gold_men, False)
     print("RG")
@@ -145,8 +146,8 @@ if __name__ == '__main__':
     print("MC")
     runExperimentW2V(gold_mc, False)
     print("W2V")
-    #runExperimentW2V(gold_ws, False)
-    #runExperimentW2V(gold_ws_r, False)
-    #runExperimentW2V(gold_ws_s, False)
+    runExperimentW2V(gold_ws, False)
+    runExperimentW2V(gold_ws_r, False)
+    runExperimentW2V(gold_ws_s, False)
 
 
