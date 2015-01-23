@@ -54,7 +54,8 @@ def computeLinSimilarity(term1, term2):
     for w1s in w1_syns:
         for w2s in w2_syns:
             try:
-                sim = wn.lin_similarity(w1s, w2s, ic)
+                # sim = wn.lin_similarity(w1s, w2s, ic)
+                sim = wn.jcn_similarity(w1s, w2s, ic)
                 if sim > maxsim:
                     maxsim = sim
             except Exception:
@@ -63,8 +64,9 @@ def computeLinSimilarity(term1, term2):
 
 def initW2V():
     global w2v
-    model_filename="/opt3/.data-lofi/word2vec_google/GoogleNews-vectors-negative300.bin"
+    model_filename="/opt3/home/lofi/word2vec_models/GoogleNews-vectors-negative300.bin.gz"
     #GoogleNews-vectors-negative300.bin.gz
+    #"/opt3/.data-lofi/word2vec_google/GoogleNews-vectors-negative300.bin"
     #freebase-vectors-skipgram1000.bin.gz
     #/opt3/home/lofi/word2vec_models/freebase-vectors-skipgram1000-en.bin.gz
     if (w2v is None):
@@ -110,9 +112,7 @@ def trainSVM():
 
 
 
-def runExperimentW2V(golddata, verbose):
-    print("COMPUTING")
-    initW2V()
+def runExperimentW2V(datasetlabel, golddata, verbose):
     similarity_vector = []
     reference_vector = []
     for g in golddata:
@@ -125,7 +125,7 @@ def runExperimentW2V(golddata, verbose):
             print("Class: %i " % clf.predict(w2v[g[0]]-w2v[g[1]])[0])
     correlation_p = pearsonr(reference_vector, similarity_vector)
     correlation_sp = spearmanr(reference_vector, similarity_vector)
-    print("Correlation %4.3f  %4.3f " % (correlation_p[0], correlation_sp[0]))
+    print("%s : %4.3f  %4.3f " % (datasetlabel, correlation_p[0], correlation_sp[0]))
 
 
 
@@ -139,15 +139,11 @@ if __name__ == '__main__':
     gold_ws = loadGoldData(absPathToTestFiles+"EN-WS-353-all.txt", 1.0 / 10)
     gold_men = loadGoldData(absPathToTestFiles+"MEN-full.txt", 1.0 / 50)
     # trainSVM()
-    print("mem")
-    runExperimentW2V(gold_men, False)
-    print("RG")
-    runExperimentW2V(gold_rg, False)
-    print("MC")
-    runExperimentW2V(gold_mc, False)
-    print("W2V")
-    runExperimentW2V(gold_ws, False)
-    runExperimentW2V(gold_ws_r, False)
-    runExperimentW2V(gold_ws_s, False)
+    runExperimentW2V("MC30", gold_mc, False)
+    runExperimentW2V("RG65", gold_rg, False)
+    runExperimentW2V("MEM", gold_men, False)
+    runExperimentW2V("W353",gold_ws, False)
+    runExperimentW2V("W353-s", gold_ws_s, False)
+    runExperimentW2V("W353-r", gold_ws_r, False)
 
 
