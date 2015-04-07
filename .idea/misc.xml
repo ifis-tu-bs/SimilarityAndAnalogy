@@ -20,7 +20,7 @@
   <component name="ProjectModuleManager">
     <modules />
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="Remote Python 3.4.1 (ssh://lofi@is69.ifis.cs.tu-bs.de:22/opt/anaconda3/bin/python)" project-jdk-type="Python SDK" />
+  <component name="ProjectRootManager" version="2" project-jdk-name="Remote Python 3.4.2 (ssh://athiq@134.169.32.169:22/opt/anaconda3/bin/python) (1)" project-jdk-type="Python SDK" />
   <component name="PropertiesComponent">
     <property name="options.lastSelected" value="http.certificates" />
     <property name="options.splitter.main.proportions" value="0.3" />
