@@ -1,7 +1,7 @@
 __author__ = 'Christoph'
 
 from nltk.corpus import wordnet as wn
-from nltk.corpus import wordnet_ic
+from nltk.corpus import wordnet
 from nltk.corpus import brown, movie_reviews, treebank
 from gensim.models import word2vec
 from scipy.stats.stats import pearsonr, spearmanr
@@ -47,7 +47,7 @@ def computeLinSimilarity(term1, term2):
     global ic
     if not ic:
         #ic = wordnet_ic.ic('ic-semcor.dat')
-        ic = wordnet_ic.ic('ic-brown.dat')
+        ic = wordnet.ic('ic-brown.dat')
     w1_syns = wn.synsets(term1)
     w2_syns = wn.synsets(term2)
     maxsim = 0

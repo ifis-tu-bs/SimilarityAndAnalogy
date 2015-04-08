@@ -1,6 +1,5 @@
 #!/bin/env python3.0
 
-
 from SAT.Challenge import Challenge
 import random
 from gensim.models import word2vec
