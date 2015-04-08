@@ -18,7 +18,7 @@
     <PathMappingSettings>
       <option name="pathMappings">
         <list>
-          <mapping local-root="C:\Users\Athiq\Documents\GitHub\SimilarityAndAnalogy" remote-root="/opt3/users/athiq/analogy" />
+          <mapping local-root="$USER_HOME$/Documents/GitHub/SimilarityAndAnalogy" remote-root="/opt3/users/athiq/analogy/" />
         </list>
       </option>
     </PathMappingSettings>
