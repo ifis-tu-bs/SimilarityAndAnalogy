@@ -16,7 +16,12 @@ import logging
 ic = None
 w2v = None
 clf = None
-absPathToTestFiles = "/opt3/home/lofi/_pycharm/similarity/"
+## Path for remote execution
+## When executing remotly, also do a proper mapping between local files and remote files in the config
+## Path for remote execution Christoph
+absPathToTestFiles = "/opt3/home/lofi/_pycharm_projects/similarity/"
+## path for local execution Christoph
+# absPathToTestFiles = "C:/Users/Christoph/SkyDrive/Documents/_pycharm_projects/analogy/similarity/"
 
 def loadGoldData(filename, correctorFactor):
     with open(filename, 'r') as file:
