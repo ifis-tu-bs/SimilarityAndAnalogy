@@ -19,7 +19,7 @@ clf = None
 ## Path for remote execution
 ## When executing remotly, also do a proper mapping between local files and remote files in the config
 ## Path for remote execution Christoph
-absPathToTestFiles = "/opt3/home/lofi/_pycharm_projects/similarity/"
+absPathToTestFiles = "/home/lofi/_pycharm_projects/similarity/"
 ## path for local execution Christoph
 # absPathToTestFiles = "C:/Users/Christoph/SkyDrive/Documents/_pycharm_projects/analogy/similarity/"
 
@@ -69,7 +69,7 @@ def computeLinSimilarity(term1, term2):
 
 def initW2V():
     global w2v
-    model_filename="/opt3/home/lofi/word2vec_models/GoogleNews-vectors-negative300.bin.gz"
+    model_filename="/home/lofi/word2vec_models/GoogleNews-vectors-negative300.bin.gz"
     #GoogleNews-vectors-negative300.bin.gz
     #"/opt3/.data-lofi/word2vec_google/GoogleNews-vectors-negative300.bin"
     #freebase-vectors-skipgram1000.bin.gz
@@ -121,8 +121,8 @@ def runExperimentW2V(datasetlabel, golddata, verbose):
     similarity_vector = []
     reference_vector = []
     for g in golddata:
-        #sim = computeLinSimilarity(g[0], g[1])
-        sim = computeW2VSimilarity(g[0], g[1])
+        sim = computeLinSimilarity(g[0], g[1])
+        #sim = computeW2VSimilarity(g[0], g[1])
         similarity_vector.append(sim)
         reference_vector.append(g[2])
         if verbose:
@@ -143,6 +143,7 @@ if __name__ == '__main__':
     gold_ws_s = loadGoldData(absPathToTestFiles+"EN-WS-353-similar.txt", 1.0 / 10)
     gold_ws = loadGoldData(absPathToTestFiles+"EN-WS-353-all.txt", 1.0 / 10)
     gold_men = loadGoldData(absPathToTestFiles+"MEN-full.txt", 1.0 / 50)
+    gold_simlex = loadGoldData(absPathToTestFiles+"SimLex-999.txt", 1.0 / 50)
     # trainSVM()
     runExperimentW2V("MC30", gold_mc, False)
     runExperimentW2V("RG65", gold_rg, False)
@@ -150,5 +151,6 @@ if __name__ == '__main__':
     runExperimentW2V("W353",gold_ws, False)
     runExperimentW2V("W353-s", gold_ws_s, False)
     runExperimentW2V("W353-r", gold_ws_r, False)
+    runExperimentW2V("simlex", gold_simlex, False)
 
 
