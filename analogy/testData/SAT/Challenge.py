@@ -5,7 +5,7 @@ Created on 08.12.2014
 '''
 
 class Challenge(object):
-    """ This class stores a SAT challenge and its answer options """ 
+    """ This class stores a MikolovQuestionwords challenge and its answer options """
 
     def __init__(self):
         """ Basic constructor """
@@ -13,15 +13,15 @@ class Challenge(object):
      
      
     def addOption(self,rawline):
-        """ Add a new option by reading a raw line from the SAT file 
-        rawline : str String as read from SAT file """
+        """ Add a new option by reading a raw line from the MikolovQuestionwords file
+        rawline : str String as read from MikolovQuestionwords file """
         splits=rawline.strip().split(" ")
         self.options.append(splits)
                
     
     def setCorrectIndex(self, index):
         """ Sets the index of the correct option, and stores it as a number.
-        rawline : str Strinf as read from SAT file """
+        rawline : str Strinf as read from MikolovQuestionwords file """
         self.correctIndex=ord(index[0])-96
      
         
