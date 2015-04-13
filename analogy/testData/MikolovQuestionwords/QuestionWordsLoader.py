@@ -7,7 +7,7 @@ from scipy.stats.stats import pearsonr, spearmanr
 from scipy.spatial.distance import *
 import numpy
 
-absPathToTestFiles = "/opt3/home/lofi/_pycharm/similarity/analogy/"
+absPathToTestFiles = "/opt3/home/lofi/_pycharm/similarity/MikolovQuestionwords/"
 w2v = None
 gold = None
 

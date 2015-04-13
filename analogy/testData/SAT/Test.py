@@ -16,7 +16,7 @@ def compute_similarity(option1, option2):
 
 def loadSATchallanges():
     # read file into String array
-    with open('SAT-package-V3.txt', 'r') as file:
+    with open('MikolovQuestionwords-package-V3.txt', 'r') as file:
         lines = file.readlines()
 
     challenges = []
