@@ -8,6 +8,7 @@ from scipy.stats.stats import pearsonr, spearmanr
 from scipy.spatial.distance import *
 from sklearn import svm
 
+
 import os.path
 import logging
 
@@ -60,7 +61,9 @@ def computeLinSimilarity(term1, term2):
         for w2s in w2_syns:
             try:
                 # sim = wn.lin_similarity(w1s, w2s, ic)
-                sim = wn.jcn_similarity(w1s, w2s, ic)
+                sim = wn.lch_similarity(w1s, w2s, ic)
+                #sim = wn.path_similarity(w1s, w2s, ic)
+                #sim = wn.res_similarity(w1s, w2s, ic)
                 if sim > maxsim:
                     maxsim = sim
             except Exception:
@@ -136,6 +139,7 @@ def runExperimentW2V(datasetlabel, golddata, verbose):
 
 
 if __name__ == '__main__':
+
     print("LOADING")
     gold_mc = loadGoldData(absPathToTestFiles+"EN-MC-30.txt", 1.0 / 4)
     gold_rg = loadGoldData(absPathToTestFiles+"EN-RG-65.txt", 1.0 / 4)
@@ -143,7 +147,7 @@ if __name__ == '__main__':
     gold_ws_s = loadGoldData(absPathToTestFiles+"EN-WS-353-similar.txt", 1.0 / 10)
     gold_ws = loadGoldData(absPathToTestFiles+"EN-WS-353-all.txt", 1.0 / 10)
     gold_men = loadGoldData(absPathToTestFiles+"MEN-full.txt", 1.0 / 50)
-    gold_simlex = loadGoldData(absPathToTestFiles+"SimLex-999.txt", 1.0 / 50)
+    gold_simlex = loadGoldData(absPathToTestFiles+"SimLex-999.txt", 1.0 / 10)
     # trainSVM()
     runExperimentW2V("MC30", gold_mc, False)
     runExperimentW2V("RG65", gold_rg, False)
