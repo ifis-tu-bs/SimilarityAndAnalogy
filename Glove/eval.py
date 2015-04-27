@@ -36,7 +36,7 @@ def most_similar(W, vocab, test):
     vector1=W[word_id1]
     vector2=W[word_id2]
     cos= cosine(vector1,vector2)
-    print cos
+    print ("cos")
 
 
 def parse_args():

@@ -2,7 +2,7 @@ __author__ = 'Athiq'
 from scipy.stats.stats import pearsonr, spearmanr
 from scipy.spatial.distance import *
 
-import glove,eval
+from Glove import eval,glove
 import gensim
 
 
@@ -28,7 +28,7 @@ def GloveSim(path, correctorFactor,verbose):
             correctedsplits = []
             correctedsplits.append(splits[0])
             correctedsplits.append(splits[1])
-            print correctedsplits
+            print ("correctedsplits")
             correctedsplits.append(float(splits[2]) * correctorFactor)
 
             vocab = glove.build_vocab(correctedsplits)
