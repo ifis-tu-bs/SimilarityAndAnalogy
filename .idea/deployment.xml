@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData">
+  <component name="PublishConfigData" serverName="IS69">
     <serverData>
-      <paths name="is69lofi">
+      <paths name="IS69">
         <serverdata>
           <mappings>
-            <mapping deploy="/" local="$PROJECT_DIR$" web="/" />
+            <mapping deploy="/analogy" local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>
