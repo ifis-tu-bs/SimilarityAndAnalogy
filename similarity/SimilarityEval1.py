@@ -2,7 +2,6 @@ __author__ = 'Christoph'
 
 import nltk
 import re
-import distance
 from nltk.corpus import wordnet as wn
 from nltk.corpus import wordnet_ic
 from gensim.models import word2vec
@@ -31,14 +30,11 @@ def loadGoldData(filename, correctorFactor):
             if line.startswith("\n"):
                 i += 1
                 continue
-            splits = line.split(" ") #change space or tab
+            splits = line.split("\t") #change space or tab
             correctedsplits = [ ]
             correctedsplits.append(splits[0])
             correctedsplits.append(splits[1])
-            correctedsplits.append(splits[2])
-            correctedsplits.append(splits[3])
-
-            #correctedsplits.append(float(splits[2]) * correctorFactor)
+            correctedsplits.append(float(splits[2]) * correctorFactor)
             simGold.append(correctedsplits)
         return simGold
 
@@ -62,37 +58,16 @@ def computeLinSimilarity(term1, term2):
 
 def computeW2VSimilarity(term1, term2):
     global w2v_model
-    model_filename="/opt3/home/lofi/word2vec_models/GoogleNews-vectors-negative300.bin.gz" #change output/outputFinal
+    model_filename="/opt3/home/pratima/data/output.model.bin" #change output/outputFinal
     #GoogleNews-vectors-negative300.bin.gz
     #freebase-vectors-skipgram1000.bin.gz
     #/opt3/home/lofi/word2vec_models/freebase-vectors-skipgram1000-en.bin.gz
-    #opt3/home/pratima/data/output.model.bin/
-    #/opt3/home/lofi/word2vec_models/GoogleNews-vectors-negative300.bin.gz
+    #/opt3/home/pratima/data/output.model.bin
 
     if (w2v_model is None):
         print("Loading W2V")
         w2v_model = word2vec.Word2Vec.load_word2vec_format(model_filename, binary=True)
     return w2v_model.similarity(term1, term2)
-
-def analogy():
-   model_filename="/opt3/home/lofi/word2vec_models/GoogleNews-vectors-negative300.bin.gz"
-   model=word2vec.Word2Vec.load_word2vec_format(model_filename, binary=True)
-   file_path="/opt3/home/thakkar/finalcat.txt"
-   apr = loadGoldData(file_path, 1.0 / 10)
-
-
-   #print(apr)
-   for value in apr:
-    print(value[0],value[1],value[2],value[3])
-    temp=model.most_similar(positive=[value[0], value[3]], negative=[value[2]],topn=1)
-    #temp=model.n_similarity([value[0], value[1]],[value[2],value[3]])
-    print(temp)
-
-
-    #model.similarity('woman', 'man')
-    #Distance=distance.nlevenshtein(value[3]
-
-   #temp is a list(0) strip and use it later
 
 
 
@@ -105,9 +80,8 @@ if __name__ == '__main__':
     #gold = loadGoldData("EN-WS-353-all.txt", 1.0 / 10)
     #gold = loadGoldData("EN-ES-353-verbose.txt", 1.0 / 10)
     #gold = loadGoldData("MEN-full.txt", 1.0 / 10)
-    #gold = loadGoldData("/opt3/home/pratima/data/analogy.txt", 1.0 / 5)
+    gold = loadGoldData("/opt3/home/pratima/data/analogy.txt", 1.0 / 5)
     print("COMPUTING")
-    analogy()
 
 
     ##
@@ -117,18 +91,18 @@ if __name__ == '__main__':
     similarity_vector = []
     reference_vector = []
    # f=open('/opt3/home/pratima/data/output.model.bin','rb')
-    #for g in gold:
+    for g in gold:
         #sim = computeLinSimilarity(g[0], g[1])
         #byte = f.read()
         #if g != byte:
             #sim = 0.105
         #else:
-     #   sim = computeW2VSimilarity(g[0], g[1])
-      #  similarity_vector.append(sim)
-       # reference_vector.append(g[2])
-        #print("Similarity: %20s : %-20s measured: %5.3f correct:%5.3f " % ( g[0], g[1], sim, g[2]))
-    #correlation = pearsonr(reference_vector, similarity_vector)
-    #print("Correlation %4.3f" % correlation[0])
+        sim = computeW2VSimilarity(g[0], g[1])
+        similarity_vector.append(sim)
+        reference_vector.append(g[2])
+        print("Similarity: %20s : %-20s measured: %5.3f correct:%5.3f " % ( g[0], g[1], sim, g[2]))
+    correlation = pearsonr(reference_vector, similarity_vector)
+    print("Correlation %4.3f" % correlation[0])
 
 
 
