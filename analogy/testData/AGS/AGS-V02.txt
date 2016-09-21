@@ -149,7 +149,7 @@ music compose cake bake 5 Common Definite Cross-domain
 music compose dance choreograph 4.8 Common Indefinite Intra-domain
 music compose software program 4.6 Common Definite Cross-domain
 music compose dress stitch 3.8 Common Indefinite Cross-domain
-musc compose literature language 2.8 Common Indefinite Cross-domain
+music compose literature language 2.8 Common Indefinite Cross-domain
 music compose snowman build 2 Common Definite Intra-domain
 music compose song lemon 1 Common Indefinite Cross-domain
 exercise gym work office 5 Common Definite Intra-domain

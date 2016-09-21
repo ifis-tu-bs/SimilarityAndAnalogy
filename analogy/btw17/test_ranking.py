@@ -36,7 +36,8 @@ def loadGoldData(dataset):
         return simGold
 
 analogydataset = loadGoldData(golddata_file)
-model=w2vAida.Word2Vec.load_word2vec_format(model_file, binary=True)
+### Load Training Model. Note: s2v needs | delimeter,
+model=w2vAida.Word2Vec.load_word2vec_format(fname=model_file, binary=True, fvocab=vocab_file, delimeter="|")
 
 duplicatecount = 0.0
 count = 0.0
