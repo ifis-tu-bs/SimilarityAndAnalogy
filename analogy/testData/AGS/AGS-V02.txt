@@ -265,12 +265,12 @@ china shanghai russia moscow 4 Unc Definite Intra-domain
 china shanghai india mumbai 3.6 Common Definite Intra-domain
 china shanghai indonesia jakarta 3.6 Common Definite Intra-domain
 china shanghai wales chennai 1 Unc Indefinite Intra-domain
-amphibian frog reptile snake 5 Common Indefinite Intra-domain
-amphibian frog mammal whale 4.8 Common Definite Intra-domain
-amphibian frog bird eagle 4.4 Common Indefinite Intra-domain
-amphibian frog fish gold 3 Common Indefinite Cross-domain
-amphibian frog insect beer 1.4 Common Indefinite Intra-domain
-amphibian frog animal rock 1 Common Indefinite Cross-domain
+frog amphibian snake reptile 5 Common Indefinite Intra-domain
+frog amphibian whale mammal 4.8 Common Definite Intra-domain
+frog amphibian eagle bird 4.4 Common Indefinite Intra-domain
+frog amphibian gold fish 3 Common Indefinite Cross-domain
+frog amphibian beer insect 1.4 Common Indefinite Intra-domain
+frog amphibian rock animal 1 Common Indefinite Cross-domain
 chicken coop bee hive 5 Common Definite Intra-domain
 chicken coop bat roost 4.8 Unc Definite Intra-domain
 chicken coop pigeon cote 4 Common Indefinite Intra-domain
@@ -710,7 +710,7 @@ tailor cloth brownsmith copper 4 Common Indefinite Cross-domain
 tailor cloth cobbler lace 3.4 Common Indefinite Cross-domain
 tailor cloth painter stone 2 Common Indefinite Intra-domain
 tailor cloth plumber needle 1.7 Common Indefinite Cross-domain
-carpenter saw talior needle 5 Common Indefinite Cross-domain
+carpenter saw tailor needle 5 Common Indefinite Cross-domain
 carpenter saw gardener shear 5 Common Definite Intra-domain
 carpenter saw plumber wrench 4.5 Common Indefinite Intra-domain
 carpenter saw electrician plier 4.4 Common Indefinite Intra-domain
