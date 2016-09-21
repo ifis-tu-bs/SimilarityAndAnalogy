@@ -535,6 +535,7 @@ class Word2Vec(utils.SaveLoad):
             result = Word2Vec(size=layer1_size)
             result.syn0 = zeros((vocab_size, layer1_size), dtype=REAL)
             if binary:
+                incomplete=0
                 binary_len = dtype(REAL).itemsize * layer1_size
                 for line_no in range(vocab_size):
                     # mixed text and binary: read text first, then binary
@@ -550,11 +551,13 @@ class Word2Vec(utils.SaveLoad):
                         result.vocab[word] = Vocab(index=line_no, count=vocab_size - line_no)
                     elif word in counts:
                         result.vocab[word] = Vocab(index=line_no, count=counts[word])
-                    else:
-                        logger.warning("vocabulary file is incomplete")
+                    else:     
+                        incomplete+=1
                         result.vocab[word] = Vocab(index=line_no, count=None)
                     result.index2word.append(word)
                     result.syn0[line_no] = fromstring(fin.read(binary_len), dtype=REAL)
+                if incomplete>0:
+                    logger.warning("vocabulary file is incomplete: "+str(incomplete)+" word counts missing")
             else:
                 for line_no, line in enumerate(fin):
                     parts = utils.to_unicode(line).split()
@@ -940,6 +943,7 @@ class Word2Vec(utils.SaveLoad):
                 l1 = x,y
                 l2 = tuple([l0]+[l1])
                 l.append(l2)
+                logging.debug("     - {}({}) : {}({}) >> {}".format(x, self.vocab[x].count, y, self.vocab[y].count, l0))
             m = max(l,key=itemgetter(0))[1]
             j1 = ''.join(elem for elem in m[1])
             j2 = ''.join(elem for elem in m[0])
@@ -954,13 +958,14 @@ class Word2Vec(utils.SaveLoad):
                 o1 = x,y
                 o2 = tuple([o0]+[o1])
                 o.append(o2)
+                logging.debug("     - {}({}) : {}({}) >> {}".format(x, self.vocab[x].count, y, self.vocab[y].count, o0))
             m = max(o,key=itemgetter(0))[1]
             j3 = ''.join(elem for elem in m[1])
             j4 = ''.join(elem for elem in m[0])
             r.append(j3)
             r.append(j4)
 
-        print("   ", j2,j1,j4,j3)
+        #logging.debug("     --", j2,j1,j4,j3)
         return Word2Vec.n_similarity(self,[j2,j1],[j4,j3])
 
     def n_similarity(self, ws1, ws2):

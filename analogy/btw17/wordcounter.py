@@ -36,8 +36,8 @@ import codecs
 import nltk
 
 
-vocab_file = "D:/data/analogy/pratima_w2v_models/s2v.vocab"
-input_file = "D:/data/analogy/pratima_w2v_models/s2v-final.txt"
+vocab_file = "/opt3/home/lofi/word2vec_models/s2v.vocab"
+input_file = "/opt3/home/pratima/thesis_final/models/s2v-final.txt"
 
 
 
@@ -59,4 +59,4 @@ fdist = nltk.FreqDist(words)
 with open(vocab_file, "w") as f:
     for word in fdist:
         if fdist[word]>4:
-            f.write(u'{} {}'.format(word, fdist[word]))
+            f.write(u'{} {}\n'.format(word, fdist[word]))
