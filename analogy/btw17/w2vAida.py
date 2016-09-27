@@ -508,7 +508,7 @@ class Word2Vec(utils.SaveLoad):
         global multi_vector_delimeter
         multi_vector_delimeter=delimeter
 
-        print('load local with delimeter '+multi_vector_delimeter)
+        logging.info('load local with delimeter '+multi_vector_delimeter)
         """
         Load the input-hidden weight matrix from the original C word2vec-tool format.
         Note that the information stored in the file is incomplete (the binary tree is missing),
@@ -884,7 +884,7 @@ class Word2Vec(utils.SaveLoad):
             return 0.0
         #print(sim)
 
-    def n_similarity_new(self,one=[],two=[]):
+    def n_similarity_new(self,one=[],two=[], all_words=None):
 
         self.init_sims()
 
@@ -902,7 +902,7 @@ class Word2Vec(utils.SaveLoad):
                                 else word for word in one]
         n = [(word, -1.0) if isinstance(word, string_types)
                                  else word for word in two]
-
+ 
         p1 = p[:len(p)//2]
         p2 = p[len(p)//2:]
         sp1 = ', '.join('{}'.format(*el) for el in p1)
@@ -916,15 +916,36 @@ class Word2Vec(utils.SaveLoad):
         l, k, o, r = [],[],[],[]
 
         all_input = []
-        all_counts = []
-        for word, weight in one + two:
+        all_counts = {}
+
+        if all_words is None:
+            #print("Build new all words")
+            # iterate over the whole vocabulary....
             for key,value in self.vocab.items():
-                # here we could get value[count] for some weird count value...
-                key2 = key.split(multi_vector_delimeter)
-                key3 = key2[0]
-                if (word == key3):
-                    all_input.append(key)
-                    all_counts.append([key, value.count])
+                # split the multi-prototype from the vocabulary into main word part, and prototype part
+                freq = value.count
+                split_key = key.split(multi_vector_delimeter)
+                main_keyword = split_key[0]
+                # iterate over the provided words, and check if it matches any token
+                for word, weight in one + two:
+                    # if we have indeed a match...
+                    if (word == main_keyword): 
+                        all_input.append(key)
+                        # we keep a dictionary of statistics for each word, and add new prototypes to it when found
+                        if not main_keyword in all_counts:
+                            all_counts[main_keyword]=[]
+                        all_counts[main_keyword].append([key, freq])
+        else:
+            all_counts=all_words
+            #print("Use given all words")
+            for word, weight in one + two:
+                for prototype in all_counts[word]:    
+                    all_input.append(prototype[0])
+                    #print(prototype[0])
+        
+         
+        #print(all_counts)
+        ## sort word back into the respective input buckets (yes, this is unnecesarily convoluted)
         for f in all_input:
             if sp1 in f:
                 wone.append(f)
@@ -938,13 +959,15 @@ class Word2Vec(utils.SaveLoad):
         if not wone or not wtwo:
             return 0.0
         else:
+            # iterate over the crossproduct of all variants of word one and all variants of word two
             for x, y in [(x,y) for x in wone for y in wtwo]:
                 l0 = Word2Vec.similarity(self, x , y)
                 l1 = x,y
                 l2 = tuple([l0]+[l1])
                 l.append(l2)
+                # store a tuple (similarity, (w1_variant, w2_variant))
                 logging.debug("     - {}({}) : {}({}) >> {}".format(x, self.vocab[x].count, y, self.vocab[y].count, l0))
-            m = max(l,key=itemgetter(0))[1]
+            m = max(l,key=itemgetter(0))[1]  # 
             j1 = ''.join(elem for elem in m[1])
             j2 = ''.join(elem for elem in m[0])
             k.append(j1)
